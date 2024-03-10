@@ -3,6 +3,7 @@ import { TextInput, Text, StyleSheet, KeyboardAvoidingView, Pressable } from 're
 import colors from '../constants/colors';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import Toast from 'react-native-toast-message';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -18,7 +19,17 @@ const LoginScreen = ({ navigation }) => {
             })
             .catch((error) => {
                 const errorMessage = error.message;
-                alert(errorMessage);
+
+                console.log(error);
+
+
+                //alert(errorMessage);
+
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error',
+                    text2: errorMessage,
+                });
             });
     };
 
@@ -36,6 +47,7 @@ const LoginScreen = ({ navigation }) => {
                 placeholder="Email"
                 value={email}
                 onChangeText={setEmail}
+                autoCapitalize='none'
             />
             <TextInput
                 style={styles.input}
@@ -43,6 +55,7 @@ const LoginScreen = ({ navigation }) => {
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
+                autoCapitalize='none'
             />
             <Pressable
                 onPress={handleLogin}

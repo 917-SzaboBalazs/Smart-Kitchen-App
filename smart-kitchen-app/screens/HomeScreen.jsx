@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native-web';
 import colors from '../constants/colors';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
+import Toast from 'react-native-toast-message';
 
 const HomeScreen = ({ navigation }) => {
 
@@ -14,7 +15,13 @@ const HomeScreen = ({ navigation }) => {
             })
             .catch((error) => {
                 const errorMessage = error.message;
-                alert(errorMessage);
+                //alert(errorMessage);
+
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error',
+                    text2: errorMessage,
+                });
             });
     }
     
