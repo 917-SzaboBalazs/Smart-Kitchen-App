@@ -20,9 +20,6 @@ const LoginScreen = ({ navigation }) => {
             .catch((error) => {
                 const errorMessage = error.message;
 
-                console.log(error);
-
-
                 //alert(errorMessage);
 
                 Toast.show({
