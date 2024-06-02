@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import colors from '../constants/colors';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
@@ -9,6 +9,18 @@ import axios from 'axios';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { countProductsByUserGroupByLabel } from '../service/ProductService';
 import { ProductContext } from '../Context';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+const productImages = {
+    milk: require('../images/milk.png'),
+    butter: require('../images/butter.png'),
+    cheese: require('../images/cheese.png'),
+    "cottage cheese": require('../images/cottage cheese.png'),
+    cream: require('../images/cream.png'),
+    "ice cream": require('../images/ice cream.png'),
+    sourcream: require('../images/sourcream.png'),
+    kefir: require('../images/kefir.png'),
+}
 
 const HomeScreen = ({ navigation }) => {
 
@@ -114,7 +126,7 @@ const HomeScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text style={styles.mainTitle}>Smart Kitchen App</Text>
 
             {auth.currentUser &&
@@ -156,18 +168,21 @@ const HomeScreen = ({ navigation }) => {
             {
                 auth.currentUser &&
                 <>
-                    <View>
+                    <Text style={styles.productTitle}>Your products</Text>
+
+                    <ScrollView>
                         {products.map((product, index) => (
-                            <View key={index}>
-                                <Text>{product.label}</Text>
-                                <Text>{product.count}</Text>
+                            <View key={index} style={styles.productItem}>
+                                <Image source={productImages[product.label]} style={{ width: 32, height: 32, marginRight: 20 }} />
+                                <Text style={styles.productLabel}>{product.label}</Text>
+                                <Text style={styles.productCount}>{product.count}</Text>
                             </View>
                         ))}
-                    </View>
+                    </ScrollView>  
                 </>
             }
             
-        </View>
+        </SafeAreaView>
     );
 };
 
@@ -175,8 +190,9 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.background,
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 64,
     },
     mainTitle: {
         fontSize: 32,
@@ -208,6 +224,29 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         fontSize: 16,
+    },
+    productTitle: {
+        fontSize: 24,
+        color: colors.primary,
+        marginTop: 32,
+        marginBottom: 16,
+        fontWeight: 'bold',
+    },
+    productItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.secondary,
+    },
+    productLabel: {
+        fontSize: 20,
+        color: colors.primary,
+        width: 250,
+    },
+    productCount: {
+        fontSize: 20,
+        color: colors.secondary,
     },
 });
 
