@@ -1,5 +1,5 @@
 import { db } from "../firebase";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
 
 const productCollection = collection(db, "products");
 
@@ -25,6 +25,17 @@ export const getProductsByUser = async (user) => {
         const products = await getProducts();
 
         return products.filter(product => product.user === user);
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+export const getProductsByUserAndLabel = async (user, label) => {
+    try {
+        const products = await getProductsByUser(user);
+
+        return products.filter(product => product.label === label);
     }
     catch (error) {
         throw error;
@@ -71,6 +82,15 @@ export const addProduct = async (image, label, user) => {
         })
 
         return docRef.id;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+export const deleteProduct = async (id) => {
+    try {
+        await deleteDoc(doc(productCollection, id));
     }
     catch (error) {
         throw error;

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, View, Text, Pressable, StyleSheet, Image } from 'react-native';
+import { ScrollView, View, Text, Pressable, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import colors from '../constants/colors';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
@@ -172,10 +172,18 @@ const HomeScreen = ({ navigation }) => {
 
                     <ScrollView>
                         {products.map((product, index) => (
-                            <View key={index} style={styles.productItem}>
-                                <Image source={productImages[product.label]} style={{ width: 32, height: 32, marginRight: 20 }} />
-                                <Text style={styles.productLabel}>{product.label}</Text>
-                                <Text style={styles.productCount}>{product.count}</Text>
+                            <View
+                                key={index}
+                                style={styles.productContainer}
+                            >
+                                <TouchableOpacity
+                                    onPress={() => navigation.push('Details', { label: product.label })}
+                                    style={styles.productItem}
+                                >
+                                    <Image source={productImages[product.label]} style={{ width: 32, height: 32, marginRight: 20 }} />
+                                    <Text style={styles.productLabel}>{product.label}</Text>
+                                    <Text style={styles.productCount}>{product.count}</Text>
+                                </TouchableOpacity>
                             </View>
                         ))}
                     </ScrollView>  
@@ -232,12 +240,15 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         fontWeight: 'bold',
     },
+    productContainer: {
+        width: '100%',
+        borderBottomWidth: 1,
+        borderBottomColor: colors.secondary,
+    },
     productItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: colors.secondary,
     },
     productLabel: {
         fontSize: 20,
