@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { countProductsByUserGroupByLabel } from '../service/ProductService';
-import { ProductContext } from '../Context';
+import { ProductContext } from '../context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const productImages = {
@@ -24,18 +24,17 @@ const productImages = {
 
 const HomeScreen = ({ navigation }) => {
 
-    const [products, setProducts] = useContext(ProductContext)
+    const [products, setProducts, user, setUser] = useContext(ProductContext);
     const [isLoading, setIsLoading] = useState(false);
-    const user = auth.currentUser?.email;
 
     useEffect(() => {
 
-        if (!auth.currentUser) {
+        if (!user) {
             return;
         }
 
         fetchProducts();
-    }, []);
+    }, [user]);
 
     const fetchProducts = async () => {
         setIsLoading(true);
@@ -47,7 +46,7 @@ const HomeScreen = ({ navigation }) => {
     const handleLogOut = () => {
         signOut(auth)
             .then(() => {
-                navigation.replace("Home");
+                setUser(null);
             })
             .catch((error) => {
                 const errorMessage = error.message;
@@ -129,19 +128,19 @@ const HomeScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <Text style={styles.mainTitle}>Smart Kitchen App</Text>
 
-            {auth.currentUser &&
+            {user &&
                 <>
                     <Text style={styles.welcome}>
                         Welcome,
                     </Text>
                     <Text style={styles.userEmail}>
-                        {auth.currentUser.email}
+                        {user}
                     </Text>
                 </>
             }
 
             <View style={styles.buttonContainer}>
-                {auth.currentUser ? 
+                {user ? 
                     <>
                         <Pressable style={styles.button} onPress={handleTakeImage}>
                             <Text style={styles.buttonText}>Add new Product</Text>
@@ -166,7 +165,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
 
             {
-                auth.currentUser &&
+                user &&
                 <>
                     <Text style={styles.productTitle}>Your products</Text>
 
@@ -194,7 +193,7 @@ const HomeScreen = ({ navigation }) => {
     );
 };
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.background,
         flex: 1,

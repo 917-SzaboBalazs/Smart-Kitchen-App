@@ -6,7 +6,7 @@ import SignupScreen from './screens/SignupScreen';
 import DetailsScreen from './screens/DetailsScreen';
 import Toast from 'react-native-toast-message';
 import PhotoCard from './screens/PhotoCard';
-import { ProductProvider } from './Context';
+import { ProductProvider } from './context';
 
 const Stack = createNativeStackNavigator();
 

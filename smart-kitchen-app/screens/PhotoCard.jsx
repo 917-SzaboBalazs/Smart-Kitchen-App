@@ -2,14 +2,12 @@ import React, { useContext } from 'react';
 import { View, Image, Text, StyleSheet, Pressable } from 'react-native';
 import colors from '../constants/colors';
 import { addProduct } from '../service/ProductService';
-import { ProductContext } from '../Context';
-import { auth } from '../firebase';
+import { ProductContext } from '../context';
 
 const PhotoCard = ({route, navigation}) => {
 
     const { photo, label } = route.params;
-    const [products, setProducts] = useContext(ProductContext);
-    const user = auth.currentUser.email;
+    const [products, setProducts, user] = useContext(ProductContext);
 
     const handleAddInventory = async () => {
 

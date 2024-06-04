@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { TextInput, Text, StyleSheet, KeyboardAvoidingView, Pressable } from 'react-native';
 import colors from '../constants/colors';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import Toast from 'react-native-toast-message';
+import { ProductContext } from '../context';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [,,, setUser] = useContext(ProductContext);
 
     const handleLogin = () => {
 
@@ -16,6 +18,7 @@ const LoginScreen = ({ navigation }) => {
                 navigation.pop();
                 navigation.replace("Home");
                 resetFields();
+                setUser(email);
             })
             .catch((error) => {
                 const errorMessage = error.message;

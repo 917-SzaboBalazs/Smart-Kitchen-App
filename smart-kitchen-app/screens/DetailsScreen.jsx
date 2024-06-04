@@ -2,19 +2,17 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Pressable } from 'react-native';
 import colors from '../constants/colors';
-import { auth } from "../firebase";
 import { getProductsByUserAndLabel, deleteProduct } from "../service/ProductService";
-import { ProductContext } from "../Context";
+import { ProductContext } from "../context";
 
 
 const DetailsScreen = ({ route, navigation }) => {
 
     const label = route.params.label;
-    const user = auth.currentUser.email;
 
     const [isLoading, setIsLoading] = useState(false);
     const [images, setImages] = useState([]);
-    const [products, setProducts] = useContext(ProductContext);
+    const [products, setProducts, user] = useContext(ProductContext);
 
     const count = products.find(product => product.label === label)?.count;
 
