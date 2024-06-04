@@ -1,27 +1,14 @@
-import React from "react";
-import renderer from "react-test-renderer";
-import { ProductContext, ProductProvider } from '../context';
-import HomeScreen from "../screens/HomeScreen";
+import { render, fireEvent } from '@testing-library/react-native';
+import HomeScreen from '../screens/HomeScreen';
 
-describe("<HomeScreen />", () => {
-    it("has 2 element, when not logged in", () => {
-        const mockContext = [ [], () => {} ];
-        const tree = renderer.create(
-            <ProductContext.Provider value={mockContext}>
-                <HomeScreen />
-            </ProductContext.Provider>
-        ).toJSON();
-        expect(tree.children.length).toBe(2);
-    });
+it('should request camera permissions and launch the camera when button is pressed', async () => {
+  const { getByTestId } = render(<HomeScreen />);
+  const button = getByTestId('camera-button');
 
-    it("render when logged in", () => {
-        const user = "a@a.com";
-        const mockContext = [ [], jest.fn(), user, jest.fn()];
-        const tree = renderer.create(
-            <ProductProvider value={mockContext}>
-                <HomeScreen />
-            </ProductProvider>
-        ).toJSON();
-        expect(tree).toMatchSnapshot();
-    });
+  fireEvent.press(button);
+
+  await waitFor(() => {
+    expect(ImagePicker.requestMediaLibraryPermissionsAsync).toHaveBeenCalled();
+    expect(ImagePicker.launchCameraAsync).toHaveBeenCalled();
+  });
 });
