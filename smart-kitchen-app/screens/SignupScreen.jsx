@@ -3,6 +3,7 @@ import { TextInput, Text, StyleSheet, KeyboardAvoidingView, Pressable } from 're
 import colors from '../constants/colors';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import Toast from 'react-native-toast-message';
 
 
 const SignupScreen = ({ navigation }) => {
@@ -17,28 +18,77 @@ const SignupScreen = ({ navigation }) => {
 
         createUserWithEmailAndPassword(auth, email, password)
             .then(() => {
+                //alert('Account created successfully');
+
+                Toast.show({
+                    type: 'success',
+                    text1: 'Success',
+                    text2: 'Account created successfully',
+                });
+
                 navigation.pop();
                 resetFields();
             })
             .catch((error) => {
                 const errorMessage = error.message;
-                alert(errorMessage);
+                //alert(errorMessage);
+
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error',
+                    text2: errorMessage,
+                });
             });
     };
 
     const dataIsValid = () => {
         if (email === '' || password === '' || passwordAgain === '') {
-            alert('Please fill in all required fields');
+            //alert('Please fill in all required fields');
+
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Please fill in all required fields',
+            });
+
+            return false;
+        }
+
+        const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+
+        if (!email.match(emailRegex)) {
+            //alert('Invalid email');
+
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Invalid email',
+            });
+
             return false;
         }
 
         if (password !== passwordAgain) {
-            alert('Passwords do not match');
+            //alert('Passwords do not match');
+
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Passwords do not match',
+            });
+
             return false;
         }
 
         if (password.length < 8) {
-            alert('Password must be at least 8 characters long');
+            //alert('Password must be at least 8 characters long');
+
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Password must be at least 8 characters long',
+            });
+            
             return false;
         }
 
@@ -60,6 +110,7 @@ const SignupScreen = ({ navigation }) => {
                 placeholder="Email*"
                 value={email}
                 onChangeText={setEmail}
+                autoCapitalize='none'
             />
             <TextInput
                 style={styles.input}
@@ -67,6 +118,7 @@ const SignupScreen = ({ navigation }) => {
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
+                autoCapitalize='none'
             />
             <TextInput
                 style={styles.input}
@@ -74,6 +126,7 @@ const SignupScreen = ({ navigation }) => {
                 secureTextEntry
                 value={passwordAgain}
                 onChangeText={setPasswordAgain}
+                autoCapitalize='none'
             />
 
             <Text style={styles.passwordHint}>
