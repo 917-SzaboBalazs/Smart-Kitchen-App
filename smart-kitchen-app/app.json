@@ -31,6 +31,12 @@
         "projectId": "8966b519-5fd0-4aaf-9161-f757be0cea00"
       }
     },
-    "owner": "barryhary"
+    "owner": "barryhary",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/8966b519-5fd0-4aaf-9161-f757be0cea00"
+    }
   }
 }

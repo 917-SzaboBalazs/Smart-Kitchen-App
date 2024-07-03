@@ -27,7 +27,8 @@
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
     "react-native-toast-message": "^2.2.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "expo-updates": "~0.25.18"
   },
   "devDependencies": {
     "@babel/core": "^7.24.6",
@@ -38,7 +39,9 @@
   "private": true,
   "jest": {
     "preset": "jest-expo",
-    "setupFiles": ["./jest-setup.js"],
+    "setupFiles": [
+      "./jest-setup.js"
+    ],
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|firebase|@firebase)"
     ]
